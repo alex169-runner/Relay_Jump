@@ -150,6 +150,7 @@ internal class GameManager : MonoBehaviour
         gridMap.gameObject.SetActive(true);
 
         situation.Init();
+        backupId = situation.stimulatedId;
 
         answer = new(situation.map);
 
