@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 83ceb88a81c3f8040af3a72663734f1d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - map: {instanceID: 0}
+  - frogPrefab: {fileID: 8153609003733042768, guid: 6160c9dcd0b0adc4f8e6b455fc212819, type: 3}
+  - mapPrefab: {fileID: 7284099433570467043, guid: c97e2f4936bb06549ab5ee4221a22e20, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
