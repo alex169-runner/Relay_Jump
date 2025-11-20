@@ -87,7 +87,6 @@ internal class GameManager : MonoBehaviour
         DifficultySelector.Instance.SetAwake();
     }
 
-
     private void RestartGame()
     {
         actionStack.Clear();
