@@ -18,6 +18,7 @@ internal class GameManager : MonoBehaviour
     private FrogManager situation;
     private MaterialHighlighter mapHighlighter;
 
+    private bool isStarted;
     private int backupId;
 
     public GridMap mapPrefab;
@@ -25,6 +26,54 @@ internal class GameManager : MonoBehaviour
 
     public LinkedList<Action> actionStack;
 
+    private void Awake()
+    {
+        if (Instance == null) {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            difficulty = Difficulty.EASY;
+
+            isStarted = false;
+
+            gridMap = Instantiate(mapPrefab);
+            mapHighlighter = gridMap.GetComponent<MaterialHighlighter>();
+
+            gridMap.gameObject.transform.position = Vector3.zero;
+            gridMap.gameObject.SetActive(false);
+
+            situation = Instantiate(frogManagerPrefab);
+
+            actionStack = new();
+        } else {
+            Destroy(gameObject);
+        }
+    }
+
+    private void Update()
+    {
+        if (isStarted) {
+            if (Input.GetMouseButtonDown(1)) {
+                RollBack();
+            }
+            else if (Input.GetKeyDown(KeyCode.Return)) {
+                HideItem();
+                NewGame();
+            } else if (Input.GetKeyUp(KeyCode.Space)) {
+                RestartGame();
+            }
+        }
+    }
+
+    private void OnEnable()
+    {
+        Frog.OnFrogClicked += StartJump;
+    }
+
+    private void OnDisable()
+    {
+        Frog.OnFrogClicked -= StartJump;
+    }
     private void HideItem()
     {
         gridMap.gameObject.SetActive(false);
@@ -33,9 +82,11 @@ internal class GameManager : MonoBehaviour
 
     private void NewGame()
     {
+        isStarted = false;
         EndGameUI.instance.SetAsleep();
         DifficultySelector.Instance.SetAwake();
     }
+
 
     private void RestartGame()
     {
@@ -86,51 +137,6 @@ internal class GameManager : MonoBehaviour
         situation.stimulatedId = cur.planetId;
     }
 
-    private void Awake()
-    {
-        if (Instance == null) {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            difficulty = Difficulty.EASY;
-
-            gridMap = Instantiate(mapPrefab);
-            mapHighlighter = gridMap.GetComponent<MaterialHighlighter>();
-
-            gridMap.gameObject.transform.position = Vector3.zero;
-            gridMap.gameObject.SetActive(false);
-
-            situation = Instantiate(frogManagerPrefab);
-
-            actionStack = new();
-        } else {
-            Destroy(gameObject);
-        }
-    }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(1)) {
-            RollBack();
-        }
-        else if (Input.GetKeyDown(KeyCode.Return)) {
-            HideItem();
-            NewGame();
-        } else if (Input.GetKeyUp(KeyCode.Space)) {
-            RestartGame();
-        }
-    }
-
-    private void OnEnable()
-    {
-        Frog.OnFrogClicked += StartJump;
-    }
-
-    private void OnDisable()
-    {
-        Frog.OnFrogClicked -= StartJump;
-    }
-
     private void StartJump(Frog frog)
     {
         situation.Jump(frog);
@@ -157,6 +163,8 @@ internal class GameManager : MonoBehaviour
         actionStack.Clear();
 
         ApplyDifficultySetting();
+
+        isStarted = true;
     }
 
     private void ApplyDifficultySetting()
