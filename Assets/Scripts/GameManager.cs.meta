@@ -6,6 +6,7 @@ MonoImporter:
   defaultReferences:
   - mapPrefab: {fileID: -3365395501434026072, guid: c97e2f4936bb06549ab5ee4221a22e20, type: 3}
   - frogManagerPrefab: {fileID: 8382178730152303507, guid: 8e4b608c8eb00654abce5e9f96acb737, type: 3}
+  - backGroundMusic: {fileID: 8300000, guid: 93f7c89ae5693b64b8e617fc6df1dc2f, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

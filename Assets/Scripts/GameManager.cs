@@ -26,6 +26,10 @@ internal class GameManager : MonoBehaviour
 
     public LinkedList<Action> actionStack;
 
+    [Header("Backgound Music")]
+    public AudioClip backGroundMusic;
+    private AudioSource audioSource;
+
     private void Awake()
     {
         if (Instance == null) {
@@ -45,6 +49,8 @@ internal class GameManager : MonoBehaviour
             situation = Instantiate(frogManagerPrefab);
 
             actionStack = new();
+
+            InitializeAudio();
         } else {
             Destroy(gameObject);
         }
@@ -73,6 +79,33 @@ internal class GameManager : MonoBehaviour
     private void OnDisable()
     {
         Frog.OnFrogClicked -= StartJump;
+    }
+
+    private void InitializeAudio()
+    {
+        audioSource = gameObject.GetComponent<AudioSource>();
+
+        audioSource.loop = true;
+        audioSource.resource = backGroundMusic;
+        audioSource.volume = 1.0f;
+        audioSource.playOnAwake = false;
+
+        PlayBackgroundMusic();
+    }
+
+    private void PlayBackgroundMusic()
+    {
+        if (backGroundMusic != null) {
+            Debug.Log(backGroundMusic.name);
+            if (audioSource != null) {
+                audioSource.Play();
+                Debug.Log("music played");
+            } else {
+                Debug.LogWarning("audioSource not set");
+            }
+        } else {
+            Debug.LogWarning("background music not found");
+        }
     }
     private void HideItem()
     {
